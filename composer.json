@@ -1,0 +1,14 @@
+{
+    "name": "dman-coders/oembed_scraper",
+    "description": "An oembed endpoint that returns metadata scraped for arbitrary URLs.",
+    "require": {
+        "embed/embed": "2.6.8"
+    },
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Dan Morrison",
+            "email": "dan@coders.co.nz"
+        }
+    ]
+}
