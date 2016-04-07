@@ -24,6 +24,8 @@ will be returned as type = 'link'
 
 ## Configuration
 
+See 'Install' for installation steps.
+
 This requires no configuration out of the box.
 
 To work, the hosting server must of course have outgoing access to the internet.
@@ -49,6 +51,10 @@ It is probably easier to remove this restriction altogether,
 There is currently no restriction on the external sites that this utility may
 make requests to.
 
+It's not impossible to imagine a remote site returning malicious code in
+its payload, such as javascript in its description. So you should always perform
+your own sanitization on any input received from web-scraping in this way.
+
 ## Usage
 
 ### As an endpoint - for consumers
@@ -62,10 +68,12 @@ You would find a way to "Add new provider", and then enter the URL to this
  It should be possible to use this as a "catch-all" or wildcard provider,
  as it is *very* broad about what it accepts.
 
-#### Walkthrough for Drupal Media integration
+#### Walkthrough - installing this for Drupal Media integration
 
-First, install this script on the same server you want to be running Drupal on,
-and ensure it's responding OK.
+The Drupal Media package, combines with media_oembed is a consumer of oEmbeds.
+
+First, install _this_ script on the same server you want to be running Drupal
+ on, and ensure it's responding OK.
 
 Next, on your Drupal7 site,
 * Download and enable a bunch of modules
@@ -97,11 +105,11 @@ You should at least end up with a 'Link' file entity with a correct title
 
 ### Directly - for implimentors
 
-This attempts to implement the minimal parts of [the oEmbed specification](http://oembed.com/#section2)
+This attempts to implement the minimal parts of [the oEmbed specification](http://oembed.com/#section2) as a provider.
 Coverage is by no means complete.
 
-Make a GET request to URL that you have made oembed_scraper.php available at.
-Provide the url parameter in the GET string.
+* Make a GET request to URL that you have made oembed_scraper.php available at.
+* Provide the url parameter in the GET string.
 
 eg:
 
@@ -140,9 +148,14 @@ include
 format=text is not part of the spec, and is provided for debug purposes.
 format=xml is currently unimplimented.
 
-## Dependencies
+Height and width params - TODO.
+
+## Install / Dependencies
 
 The dependencies are pulled in via composer.
+
+The primary dependency is:
+https://github.com/oscarotero/Embed
 
 Run
 

@@ -33,9 +33,7 @@
  * Does require that the hosting server can see itself.
  */
 
-// Configurable
-///////////////
-
+// Configurable.
 /**
  * Clients IPs that are allowed to make requests of this service.
  *
@@ -49,16 +47,13 @@ $allowed_clients = array(
 );
 
 
-
-// Begin preparation
-////////////////////
-
+// Begin preparation.
 $params = $_REQUEST;
 
-// Check incoming client is allowed
+// Check incoming client is allowed.
 if (!empty($allowed_clients)) {
   $client = $_SERVER['REMOTE_ADDR'];
-  if (! in_array($client, $allowed_clients)) {
+  if (!in_array($client, $allowed_clients)) {
     http_response_code(403);
     print "Requests to this service from $client are currently disallowed";
     exit();
@@ -70,13 +65,14 @@ if (empty($params['url'])) {
   // Bad request, required argument not given.
   http_response_code(400);
   print 'No URL provided. You should pass the ?url= parameter in this request. Hint, you can also set <a href="?format=text">?format=text</a> for debugging.';
+  print '<form><input type="text" name="url" size="128"/><select name="format"><option>json</option><option>text</option></select><input type="submit"></form>';
   exit();
 }
 $url = $params['url'];
 $url_parts = parse_url($url);
 // More validation needed? Sanitize expected input at least.
-$maxwidth = @(int)$params['maxwidth'];
-$maxheight = @(int)$params['maxheight'];
+$maxwidth = @(int) $params['maxwidth'];
+$maxheight = @(int) $params['maxheight'];
 if (!empty($params['format']) && in_array($params['format'], array('json', 'xml', 'text'))) {
   $format = $params['format'];
 }
@@ -96,9 +92,8 @@ $defaults = array(
 );
 
 // Begin request.
-/////////////////
 // @see https://github.com/oscarotero/Embed
-include('vendor/autoload.php');
+include 'vendor/autoload.php';
 use Embed\Embed;
 
 /**
@@ -140,7 +135,8 @@ $fields = array(
   'providerIcon' => 'provider_icon',
 );
 foreach ($fields as $source => $destination) {
-  // empty() on an attribute failed here !? Wacky. Must be a magic getter or something.
+  // empty() on an attribute failed here !?
+  // Wacky. Must be a magic getter or something.
   if (!empty("" . $info->{$source})) {
     $oembed[$destination] = $info->{$source};
   }
@@ -149,22 +145,20 @@ foreach ($fields as $source => $destination) {
 
 $oembed += $defaults;
 
-switch($format) {
-  case 'json' :
+switch ($format) {
+  case 'json':
     header('Content-type: application/json');
     echo json_encode($oembed);
     exit;
-  case 'text' :
+
+  case 'text':
     print '<pre>';
     print_r($oembed);
     print '</pre>';
     print '<hr/>';
-    # print '<pre>';
-    # Alternate ways to extract markup for oembeds.
-    # print_r($info->getCode());
-    # print_r($info->getProvider('oembed')->bag->get('html'));
     exit;
-  case 'xml' :
+
+  case 'xml':
     print '<pre>';
     print "XML format TODO";
     // @see array2XML or something?
