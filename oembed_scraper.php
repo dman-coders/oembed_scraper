@@ -93,7 +93,14 @@ $defaults = array(
 
 // Begin request.
 // @see https://github.com/oscarotero/Embed
-include 'vendor/autoload.php';
+
+// We are either a stand-alone instance that has built composer,
+// or a library that composer has pulled in for someone else.
+if (file_exists('vendor/autoload.php')) {
+  include_once 'vendor/autoload.php';
+} else if (file_exists('../../autoload.php')) {
+  include_once '../../autoload.php';
+}
 use Embed\Embed;
 
 /**
